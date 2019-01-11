@@ -27,8 +27,7 @@ export default  props =>  {
             render: data => (
                 <span>
                     <a href="javascript:;" onClick={e => props.onRemove(data.key)}><i className="fa fa-trash"></i></a>
-                    <a href="javascript:;" style={{ marginLeft: 14}}><i className="fa fa-pencil"></i></a>
-
+                    <a href="javascript:;" style={{ marginLeft: 14 }} onClick={e => props.onUpdate(data)}><i className="fa fa-pencil"></i></a>
                 </span>
             )
         }

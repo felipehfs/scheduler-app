@@ -47,13 +47,13 @@ let SubjectForm = props => {
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Item label="Nome">
-          <Field name="name" component={renderInput} type="text" validate={required}/>
+          <Field name="name" component={renderInput} type="text" validate={required} />
       </Form.Item>
       <Form.Item label="Início">
-        <Field name="starts" component={renderTimeInput} validate={required}/>
+        <Field name="starts" component={renderTimeInput} validate={required} />
       </Form.Item>
       <Form.Item label="Término">
-        <Field name="ends" component={renderTimeInput} validate={required}/>
+        <Field name="ends" component={renderTimeInput} validate={required} />
       </Form.Item>
       <Button type="primary" onClick={handleSubmit}>Salvar</Button>
     </Form>

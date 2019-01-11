@@ -1,16 +1,14 @@
 import React from 'react'
 import SubjectForm from './SubjectForm'
 
-import { reset} from 'redux-form'
+import { reset, initialize } from 'redux-form'
 import uuidv4 from 'uuid/v4'
 import SubjectList from './SubjectList';
-import { newSubject } from '../../redux/actions/subject'
-import { connect } from 'react-redux'
+import Modal from './Modal'
+import UpdateInput from './UpdateInput'
+import { newSubject, dropSubject, loadSubject } from '../../redux/actions/subject'
+import { connect,  } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { SubmissionError } from 'redux-form'
-import { dropSubject } from '../../redux/actions/subject'
-
-
 class SubjectPage extends React.Component {
     
     state = {
@@ -30,21 +28,33 @@ class SubjectPage extends React.Component {
         dispatch(reset('subject'))
     };
 
+    openModal = (data) => {
+        this.props.initialize('updateSubject', data)
+        this.setState({ modalVisible: true })
+    }
 
+    closeModal = (data) => {
+        this.props.reset('updateSubject')
+        this.setState({ modalVisible: false })
+    }
+    
     render() {
         return (
             <div style={{ width: "40%" }}>
-                <SubjectForm onSubmit={this.submit} />
-                <SubjectList items={this.props.subjects} onRemove={this.props.dropSubject} />
+                <SubjectForm onSubmit={this.submit} onClear={this.clear}/>
+                <Modal visible={this.state.modalVisible} handleConfirm={this.closeModal} handleCancel={this.closeModal}>
+                    <UpdateInput />
+                </Modal>
+                <SubjectList items={this.props.subjects} onRemove={this.props.dropSubject} onUpdate={this.openModal}/>
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    subjects: state.subjects
+    subjects: state.subjects.list
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ dropSubject }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ dropSubject, reset, initialize }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubjectPage)
