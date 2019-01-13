@@ -43,7 +43,6 @@ const renderTimeInput = ({
 
 let SubjectForm = props => {
   const { handleSubmit } = props;
-
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Item label="Nome">

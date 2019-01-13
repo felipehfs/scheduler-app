@@ -1,14 +1,13 @@
-import React from 'react'
-import SubjectForm from './SubjectForm'
-
-import { reset, initialize } from 'redux-form'
-import uuidv4 from 'uuid/v4'
+import React from 'react';
+import SubjectForm from './SubjectForm';
+import { reset, initialize,  } from 'redux-form';
+import uuidv4 from 'uuid/v4';
 import SubjectList from './SubjectList';
-import Modal from './Modal'
-import UpdateInput from './UpdateInput'
-import { newSubject, dropSubject, loadSubject } from '../../redux/actions/subject'
-import { connect,  } from 'react-redux'
+import { newSubject, dropSubject, updateSubject } from '../../redux/actions/subject'
+import { connect,  } from 'react-redux';
+import UpdateForm  from './UpdateForm';
 import { bindActionCreators } from 'redux';
+
 class SubjectPage extends React.Component {
     
     state = {
@@ -28,24 +27,31 @@ class SubjectPage extends React.Component {
         dispatch(reset('subject'))
     };
 
-    openModal = (data) => {
-        this.props.initialize('updateSubject', data)
-        this.setState({ modalVisible: true })
-    }
-
-    closeModal = (data) => {
-        this.props.reset('updateSubject')
-        this.setState({ modalVisible: false })
+    handleUpdate = (values, dispatch) => {
+        const fields = ['name', 'starts', 'ends'];
+        const isOk = fields.reduce((acum, field) => Object.keys(values).includes(field) && acum, true);
+        if (isOk){
+            dispatch(updateSubject(values))
+            this.closeModal()
+        }
     }
     
+    closeModal = () => this.setState({ modalVisible: false })
+
+
+    setupdateMode = data => {
+        this.props.initialize('updatesubject', data)
+        this.setState({...this.state, modalVisible: true })
+    }
+
     render() {
         return (
             <div style={{ width: "40%" }}>
-                <SubjectForm onSubmit={this.submit} onClear={this.clear}/>
-                <Modal visible={this.state.modalVisible} handleConfirm={this.closeModal} handleCancel={this.closeModal}>
-                    <UpdateInput />
-                </Modal>
-                <SubjectList items={this.props.subjects} onRemove={this.props.dropSubject} onUpdate={this.openModal}/>
+                <SubjectForm onSubmit={this.submit} />
+                <UpdateForm onSubmit={this.handleUpdate} 
+                    modalVisible={this.state.modalVisible} handleCancel={this.closeModal}/>
+                <SubjectList items={this.props.subjects} onRemove={this.props.dropSubject}
+                    onUpdate={this.setupdateMode}/>
             </div>
         )
     }
@@ -55,6 +61,6 @@ const mapStateToProps = state => ({
     subjects: state.subjects.list
 })
 
-const mapDispatchToProps = dispatch => bindActionCreators({ dropSubject, reset, initialize }, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ dropSubject, reset,  initialize }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubjectPage)
