@@ -17,14 +17,7 @@ export default function(state= initial, action) {
                 list: state.list.filter(subject => subject.key !== action.payload)
             }
         case updateSubjectType:
-            let i = 0;
-            let length = state.list.length;
-            for(let i = 0; i < length; i++) {
-                if (state.list[i].key === action.payload.key){
-                    state.list[i] = action.payload
-                    break
-                }
-            }
+            state.list = state.list.map(elem => elem.key === action.payload.key? action.payload: elem);
             return state
         default:
             return state 

@@ -12,6 +12,8 @@ import moment from "moment"
 
 const format = "HH:mm"
 
+// renderInput makes the component for render input text and the 
+// validation warning
 const renderInput = ({
     label,
     input,
@@ -24,6 +26,8 @@ const renderInput = ({
     </div>
 )
 
+// renderTimeInput mount the component and set the warning alerts
+// for validations
 const renderTimeInput = ({ 
     input: {
         onChange,
@@ -40,7 +44,7 @@ const renderTimeInput = ({
 )
 
 
-
+// SubjectForm has all field of form to submit
 let SubjectForm = props => {
   const { handleSubmit } = props;
   return (

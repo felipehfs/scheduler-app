@@ -14,6 +14,7 @@ class SubjectPage extends React.Component {
         modalVisible: false,
     }
 
+    // submit event inserts the new subject into store
     submit = (values, dispatch) => {  
         const fields = ['name', 'starts', 'ends']
 
@@ -27,6 +28,7 @@ class SubjectPage extends React.Component {
         dispatch(reset('subject'))
     };
 
+    // handleUpdate makes the change into store
     handleUpdate = (values, dispatch) => {
         const fields = ['name', 'starts', 'ends'];
         const isOk = fields.reduce((acum, field) => Object.keys(values).includes(field) && acum, true);
@@ -36,9 +38,11 @@ class SubjectPage extends React.Component {
         }
     }
     
+    // closeModal 
     closeModal = () => this.setState({ modalVisible: false })
 
 
+    // setupdateMode initialize the modal 
     setupdateMode = data => {
         this.props.initialize('updatesubject', data)
         this.setState({...this.state, modalVisible: true })
